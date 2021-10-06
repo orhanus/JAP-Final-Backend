@@ -2,21 +2,23 @@
 using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
 using Core.Models.DTOs;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly IAccountRepository _accountRepository;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly ITokenService _tokenService;
 
-        public AccountService(IAccountRepository accountRepository, ITokenService tokenService)
+        public AccountService(UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService)
         {
-            _accountRepository = accountRepository;
+            _userManager = userManager;
+            _signInManager = signInManager;
             _tokenService = tokenService;
         }
 
@@ -29,18 +31,15 @@ namespace Core.Services
         /// <returns></returns>
         public async Task<UserDto> LoginAsync(LoginDto loginDto)
         {
-            User user = await _accountRepository.GetUserByUsernameAsync(loginDto.Username);
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == loginDto.Username);
 
             if (user == null)
                 throw new UnauthorizedAccessException("Username is invalid");
 
-            using var hmac = new HMACSHA512(user.PasswordSalt);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-
-            for (int i = 0; i < computedHash.Length; i++)
-                if (computedHash[i] != user.PasswordHash[i]) 
-                    throw new UnauthorizedAccessException("Invalid password");
+            if (!result.Succeeded)
+                throw new ArgumentException("Password is invalid");
 
             return new UserDto
             {
@@ -57,22 +56,28 @@ namespace Core.Services
         /// <returns></returns>
         public async Task RegisterAsync(RegisterDto registerDto)
         {
-            User existingUser = await _accountRepository.GetUserByUsernameAsync(registerDto.Username);
-
-            if (existingUser != null)
+            if (await UserExists(registerDto.Username))
                 throw new ArgumentException("Username is taken");
 
-            using var hmac = new HMACSHA512();
-
-            User user = new User
+            var user = new User
             {
-                Username = registerDto.Username,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
+                UserName = registerDto.Username
             };
 
-            await _accountRepository.RegisterUserAsync(user);
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
 
+            if (!result.Succeeded)
+                throw new ArgumentException(result.Errors.ToString());
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Customer");
+
+            if (!roleResult.Succeeded)
+                throw new ArgumentException(roleResult.Errors.ToString());
+        }
+
+        private async Task<bool> UserExists(string username)
+        {
+            return await _userManager.Users.AnyAsync(x => x.UserName == username);
         }
     }
 }

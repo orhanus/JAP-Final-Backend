@@ -25,9 +25,6 @@ namespace API.Extensions
             services.AddScoped<IRatingRepository, RatingRepository>();
             services.AddScoped<IRatingService, RatingService>();
 
-            services.AddScoped<IReportRepository, ReportRepository>();
-            services.AddScoped<IReportService, ReportService>();
-
             services.AddScoped<IScreeningRepository, ScreeningRepository>();
             services.AddScoped<IScreeningService, ScreeningService>();
 

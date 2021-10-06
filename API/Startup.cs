@@ -22,6 +22,7 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationServices(_config);
+            services.AddIdentityServices(_config);
             services.AddControllers();
             services.AddCors();
             services.AddSwaggerGen(c =>

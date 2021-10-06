@@ -17,7 +17,7 @@ namespace Repository
 
         public async Task<User> GetUserByUsernameAsync(string username)
         {
-            return await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
+            return await _context.Users.FirstOrDefaultAsync(user => user.UserName == username);
         }
 
         public async Task RegisterUserAsync(User user)

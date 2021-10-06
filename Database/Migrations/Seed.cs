@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Database.Migrations
             }
             return existingActorList;
         }
-        public static async Task SeedShows(DataContext context)
+        public static async Task SeedShows(DataContext context, RoleManager<Role> roleManager, UserManager<User> userManager)
         {
             if (await context.Media.AnyAsync()) return;
 
@@ -40,6 +41,19 @@ namespace Database.Migrations
                 context.Media.Add(show);
             }
 
+            var roles = new List<Role>
+            {
+                new Role{ Name = "Customer" },
+                new Role{ Name = "Admin" }
+            };
+
+            foreach (var role in roles)
+                await roleManager.CreateAsync(role);
+
+            var admin = new User
+            {
+                UserName = "admin"
+            };
 
 
             await context.SaveChangesAsync();
