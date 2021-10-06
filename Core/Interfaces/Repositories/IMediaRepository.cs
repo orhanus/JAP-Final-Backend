@@ -10,7 +10,7 @@ namespace Core.Interfaces.Repositories
 {
     public interface IMediaRepository
     {
-        void UpdateMediaAsync(Media media);
+        void UpdateMedia(Media media);
         IQueryable<Media> GetMediaQuery();
         Task<bool> SaveAllAsync();
         Task<Media> GetMediaByIdAsync(int showId);

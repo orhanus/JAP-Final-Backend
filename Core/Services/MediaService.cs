@@ -20,12 +20,39 @@ namespace Core.Services
         private readonly IMediaRepository _mediaRepository;
         private readonly IMapper _mapper;
         private readonly IRatingRepository _ratingRepository;
+        private readonly IActorRepository _actorRepository;
 
-        public MediaService(IMediaRepository mediaRepository, IMapper mapper, IRatingRepository ratingRepository)
+        public MediaService(IMediaRepository mediaRepository, IMapper mapper, IRatingRepository ratingRepository,
+            IActorRepository actorRepository)
         {
             _mediaRepository = mediaRepository;
             _mapper = mapper;
             _ratingRepository = ratingRepository;
+            _actorRepository = actorRepository;
+        }
+
+        public async Task<bool> AddMediaAsync(AddMediaDto addMediaDto)
+        {
+            Media media = _mapper.Map<Media>(addMediaDto);
+
+            media.Actors = await ExtractExistingAndAddNewActorsAsync(addMediaDto.Actors.ToList());
+
+            return await _mediaRepository.AddMediaAsync(media);
+        }
+
+        public async Task<bool> UpdateMediaAsync(UpdateMediaDto mediaDto)
+        {
+            Media media = await _mediaRepository.GetMediaByIdAsync(mediaDto.Id);
+            if (media == null)
+                throw new ArgumentException("Media with given id does not exist");
+
+            _mapper.Map(mediaDto, media);
+
+            media.Actors = await ExtractExistingAndAddNewActorsAsync(mediaDto.Actors.ToList());
+
+            _mediaRepository.UpdateMedia(media);
+
+            return await _mediaRepository.SaveAllAsync();
         }
 
         /// <summary>
@@ -67,8 +94,35 @@ namespace Core.Services
         }
 
 
-
         #region Private Methods
+        /// <summary>
+        /// Checks if an actor already exists in the database
+        /// If an actor already exists, gets the actor from the database and adds it to the list
+        /// If an actor does not exist, creates a new actor to be added to the database
+        /// </summary>
+        /// <param name="actorDtos"></param>
+        /// <param name="actors"></param>
+        /// <returns></returns>
+        private async Task<List<Actor>> ExtractExistingAndAddNewActorsAsync(List<ActorDto> actorDtos)
+        {
+            List<Actor> actors = new();
+
+            foreach (var actor in actorDtos)
+            {
+                var existingActor = await _actorRepository.GetActorByFullNameAsync(actor.Firstname, actor.Lastname);
+                if (existingActor != null)
+                    actors.Add(existingActor);
+                else
+                    actors.Add(new Actor
+                    {
+                        Firstname = actor.Firstname,
+                        Lastname = actor.Lastname
+                    });
+            }
+
+            return actors;
+        }
+
         /// <summary>
         /// Applies search parameters given as searchParams by extracting keywords out of it
         /// If no keywords exist within searchParams, applies searchParams on Media titles and descriptions

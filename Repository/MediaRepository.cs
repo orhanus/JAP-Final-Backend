@@ -38,7 +38,7 @@ namespace Repository
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public void UpdateMediaAsync(Media media)
+        public void UpdateMedia(Media media)
         {
             _context.Entry(media).State = EntityState.Modified;
         }

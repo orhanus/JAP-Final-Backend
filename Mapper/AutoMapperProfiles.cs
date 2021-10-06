@@ -13,12 +13,18 @@ namespace Mapper
     {
         public AutoMapperProfiles()
         {
+            CreateMap<AddMediaDto, Media>();
             CreateMap<Media, MediaDto>();
+            CreateMap<UpdateMediaDto, Media>();
+
             CreateMap<Actor, ActorDto>();
+
             CreateMap<Rating, RatingDto>();
+
             CreateMap<Screening, ScreeningDto>();
-            CreateMap<User, SpectatorDto>();
             CreateMap<AddScreeningDto, Screening>();
+
+            CreateMap<User, SpectatorDto>();
         }
     }
 }
