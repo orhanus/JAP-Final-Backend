@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
+using Core.Models.DTOs;
 using System;
 using System.Threading.Tasks;
 
@@ -14,6 +15,11 @@ namespace Core.Services
         {
             _screeningRepository = screeningRepository;
             _accountRepository = accountRepository;
+        }
+
+        public Task<bool> AddScreeningAsync(AddScreeningDto screeningDto)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

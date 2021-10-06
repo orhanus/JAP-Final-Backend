@@ -43,5 +43,11 @@ namespace Repository
         {
             _context.Entry(screening).State = EntityState.Modified;
         }
+
+        public async Task<bool> AddScreeningAsync(Screening screening)
+        {
+            _context.Screenings.Add(screening);
+            return await SaveAllAsync();
+        }
     }
 }

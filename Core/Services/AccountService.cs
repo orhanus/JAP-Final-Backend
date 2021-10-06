@@ -11,14 +11,12 @@ namespace Core.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly IAccountRepository _accountRepository;
         private readonly ITokenService _tokenService;
 
-        public AccountService(UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService)
+        public AccountService(IAccountRepository accountRepository, ITokenService tokenService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _accountRepository = accountRepository;
             _tokenService = tokenService;
         }
 
@@ -31,12 +29,12 @@ namespace Core.Services
         /// <returns></returns>
         public async Task<UserDto> LoginAsync(LoginDto loginDto)
         {
-            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == loginDto.Username);
+            var user = await _accountRepository.GetUserByUsernameAsync(loginDto.Username);
 
             if (user == null)
                 throw new UnauthorizedAccessException("Username is invalid");
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            var result = await _accountRepository.CheckPasswordSignInAsync(user, loginDto.Password);
 
             if (!result.Succeeded)
                 throw new ArgumentException("Password is invalid");
@@ -64,12 +62,12 @@ namespace Core.Services
                 UserName = registerDto.Username
             };
 
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            var result = await _accountRepository.CreateAsync(user, registerDto.Password);
 
             if (!result.Succeeded)
                 throw new ArgumentException(result.Errors.ToString());
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "Customer");
+            var roleResult = await _accountRepository.AddToRoleAsync(user, "Customer");
 
             if (!roleResult.Succeeded)
                 throw new ArgumentException(roleResult.Errors.ToString());
@@ -77,7 +75,7 @@ namespace Core.Services
 
         private async Task<bool> UserExists(string username)
         {
-            return await _userManager.Users.AnyAsync(x => x.UserName == username);
+            return await _accountRepository.GetUserByUsernameAsync(username) != null;
         }
     }
 }
