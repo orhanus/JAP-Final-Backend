@@ -1,4 +1,5 @@
 ﻿using Core.Interfaces.Services;
+using Core.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -24,6 +25,16 @@ namespace API.Controllers
                 return Ok();
 
             return BadRequest("Failed to reserve ticket for screening");
+        }
+
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpPost] 
+        public async Task<ActionResult> Add(AddScreeningDto screeningDto)
+        {
+            if (await _screeningService.AddScreeningAsync(screeningDto))
+                return NoContent();
+
+            return StatusCode(500);
         }
     }
 }

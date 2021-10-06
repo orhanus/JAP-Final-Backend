@@ -14,6 +14,7 @@ namespace Core.Interfaces.Repositories
         IQueryable<Media> GetMediaQuery();
         Task<bool> SaveAllAsync();
         Task<Media> GetMediaByIdAsync(int showId);
+        Task<bool> AddMediaAsync(Media media);
         
     }
 }

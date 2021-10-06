@@ -1,4 +1,6 @@
-﻿using Core.Interfaces.Repositories;
+﻿using AutoMapper;
+using Core.Entities;
+using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
 using Core.Models.DTOs;
 using System;
@@ -10,16 +12,21 @@ namespace Core.Services
     {
         private readonly IScreeningRepository _screeningRepository;
         private readonly IAccountRepository _accountRepository;
+        private readonly IMapper _mapper;
 
-        public ScreeningService(IScreeningRepository screeningRepository, IAccountRepository accountRepository)
+        public ScreeningService(IScreeningRepository screeningRepository,
+            IAccountRepository accountRepository, IMapper mapper)
         {
             _screeningRepository = screeningRepository;
             _accountRepository = accountRepository;
+            _mapper = mapper;
         }
 
-        public Task<bool> AddScreeningAsync(AddScreeningDto screeningDto)
+        public async Task<bool> AddScreeningAsync(AddScreeningDto screeningDto)
         {
-            throw new NotImplementedException();
+            Screening screening = _mapper.Map<Screening>(screeningDto);
+
+            return await _screeningRepository.AddScreeningAsync(screening);
         }
 
         /// <summary>

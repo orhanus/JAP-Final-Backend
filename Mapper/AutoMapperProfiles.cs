@@ -18,6 +18,7 @@ namespace Mapper
             CreateMap<Rating, RatingDto>();
             CreateMap<Screening, ScreeningDto>();
             CreateMap<User, SpectatorDto>();
+            CreateMap<AddScreeningDto, Screening>();
         }
     }
 }

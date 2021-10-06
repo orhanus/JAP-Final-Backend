@@ -16,6 +16,13 @@ namespace Repository
             _context = context;
         }
 
+        public async Task<bool> AddMediaAsync(Media media)
+        {
+            _context.Media.Add(media);
+
+            return await SaveAllAsync();
+        }
+
         public async Task<Media> GetMediaByIdAsync(int showId)
         {
             return await _context.Media.FindAsync(showId);
