@@ -15,7 +15,7 @@ namespace API.Controllers
             _screeningService = screeningService;
         }
 
-        [Authorize]
+        [Authorize(Policy = "RequireCustomerRole")]
         [HttpPost("{mediaId}/ticket")]
         public async Task<ActionResult> ReserveTicket(int mediaId)
         {

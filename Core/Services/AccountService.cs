@@ -44,7 +44,7 @@ namespace Core.Services
             return new UserDto
             {
                 Username = loginDto.Username,
-                Token = _tokenService.CreateToken(user)
+                Token = await _tokenService.CreateTokenAsync(user)
             };
         }
 
