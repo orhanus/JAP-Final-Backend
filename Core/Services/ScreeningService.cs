@@ -32,6 +32,7 @@ namespace Core.Services
         /// <summary>
         /// Checks to see if screening exists, then checks to see if user exists
         /// If both exist, adds user to Spectators of the screening
+        /// If user had already bought 10 tickets for the same screening he is unable to buy another
         /// </summary>
         /// <param name="mediaId"></param>
         /// <param name="username"></param>
@@ -47,6 +48,9 @@ namespace Core.Services
 
             if (user == null)
                 throw new ArgumentException("User with given username does not exist");
+
+            if (await _screeningRepository.GetNumberOfAlreadyReservedTickets(user.Id, screening.Id) > 10)
+                throw new ArgumentException("Unable to buy more than 10 ticekts");
 
             screening.Spectators.Add(user);
 

@@ -49,5 +49,11 @@ namespace Repository
             _context.Screenings.Add(screening);
             return await SaveAllAsync();
         }
+
+        public async Task<int> GetNumberOfAlreadyReservedTickets(int userId, int screeningId)
+        {
+            var screening = await _context.Screenings.FindAsync(screeningId);
+            return screening.Spectators.Count(x => x.Id == userId);
+        }
     }
 }
