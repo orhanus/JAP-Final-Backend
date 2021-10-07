@@ -18,6 +18,7 @@ namespace Mapper
             CreateMap<UpdateMediaDto, Media>();
 
             CreateMap<Actor, ActorDto>();
+            CreateMap<ActorDto, Actor>();
 
             CreateMap<Rating, RatingDto>();
 

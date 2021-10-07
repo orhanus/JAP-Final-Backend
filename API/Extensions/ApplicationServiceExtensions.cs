@@ -28,6 +28,8 @@ namespace API.Extensions
             services.AddScoped<IScreeningRepository, ScreeningRepository>();
             services.AddScoped<IScreeningService, ScreeningService>();
 
+            services.AddScoped<IActorRepository, ActorRepository>();
+
             services.AddScoped<ITokenService, TokenService>();
 
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);

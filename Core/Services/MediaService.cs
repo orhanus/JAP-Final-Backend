@@ -42,7 +42,7 @@ namespace Core.Services
 
         public async Task<bool> UpdateMediaAsync(UpdateMediaDto mediaDto)
         {
-            Media media = await _mediaRepository.GetMediaByIdAsync(mediaDto.Id);
+            var media = await _mediaRepository.GetMediaQuery().FirstOrDefaultAsync(media => media.Id == mediaDto.Id);
             if (media == null)
                 throw new ArgumentException("Media with given id does not exist");
 
@@ -77,8 +77,16 @@ namespace Core.Services
                 mediaParams.PageNumber, mediaParams.PageSize);
 
             foreach (var item in pagedList)
-                item.AverageRating = await _ratingRepository.GetAverageRatingAsync(item.Id);
-
+            {
+                try
+                {
+                    item.AverageRating = await _ratingRepository.GetAverageRatingAsync(item.Id);
+                }
+                catch(Exception)
+                {
+                    item.AverageRating = 0;
+                }
+            }
             return new PaginatedResponseDto<MediaDto>
             {
                 Data = pagedList,

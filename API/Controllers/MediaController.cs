@@ -31,8 +31,8 @@ namespace API.Controllers
         [HttpPost("add")]
         public async Task<ActionResult> AddMedia(AddMediaDto addMediaDto)
         {
-            if(await _mediaService.AddMediaAsync(addMediaDto))
-                return CreatedAtRoute("GetShows", new { }, addMediaDto);
+            if (await _mediaService.AddMediaAsync(addMediaDto))
+                return Ok();
 
             return BadRequest("Unable to add media");
         }
