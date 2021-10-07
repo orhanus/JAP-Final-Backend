@@ -10,6 +10,7 @@ namespace Core.Interfaces.Repositories
         Task<IdentityResult> CreateAsync(User user, string password);
         Task<IdentityResult> AddToRoleAsync(User user, string role);
         Task<SignInResult> CheckPasswordSignInAsync(User user, string password);
+        Task<User> GetUserByIdAsync(int id);
         Task<User> GetUserByUsernameAsync(string username);
     }
 }

@@ -16,17 +16,6 @@ namespace API.Controllers
             _screeningService = screeningService;
         }
 
-        [Authorize(Policy = "RequireCustomerRole")]
-        [HttpPost("{mediaId}/ticket")]
-        public async Task<ActionResult> ReserveTicket(int mediaId)
-        {
-            var username = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if(await _screeningService.AddUserToScreeningAsync(mediaId, username))
-                return Ok();
-
-            return BadRequest("Failed to reserve ticket for screening");
-        }
-
         [Authorize(Policy = "RequireAdminRole")]
         [HttpPost] 
         public async Task<ActionResult> Add(AddScreeningDto screeningDto)

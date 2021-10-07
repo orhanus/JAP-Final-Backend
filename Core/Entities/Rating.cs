@@ -3,7 +3,7 @@
 namespace Core.Entities
 {
     [Table("Ratings")]
-    public class Rating
+    public class Rating : BaseEntity
     {
         public int Id { get; set; }
         public int Score { get; set; }

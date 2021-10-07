@@ -36,5 +36,6 @@ namespace Database
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }

@@ -15,6 +15,5 @@ namespace Core.Interfaces.Repositories
         Task<bool> AddScreeningAsync(Screening screening);
         Task<bool> SaveAllAsync();
         void UpdateScreening(Screening screening);
-        Task<int> GetNumberOfAlreadyReservedTickets(int userId, int screeningId);
     }
 }

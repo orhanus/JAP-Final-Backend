@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Services
 {
-    public interface IScreeningService
+    public interface ITicketService
     {
-        Task<bool> AddScreeningAsync(AddScreeningDto screeningDto);
+        Task<bool> BuyTicket(BuyTicketDto buyTicketDto);
     }
 }

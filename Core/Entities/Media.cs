@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Core.Entities
 {
     [Table("Media")]
-    public class Media
+    public class Media : BaseEntity
     {
         public int Id { get; set; }
         public string Title { get; set; }

@@ -5,17 +5,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Core.Entities
 {
     [Table("Screenings")]
-    public class Screening
+    public class Screening : BaseEntity
     {
         public int Id { get; set; }
-        public int NumberOfTicketsSold { get; set; }
         public int NumberOfTicketsTotal { get; set; }
-        public string Street { get; set; }
-        public string City { get; set; }
-        public string PostalCode { get; set; }
+        public double TicketPrice { get; set; }
+        public Address Address { get; set; }
         public int MediaId { get; set; }
         public Media Movie { get; set; }
         public DateTime ScreeningTime { get; set; }
-        public ICollection<User> Spectators { get; set; } = new List<User>();
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }

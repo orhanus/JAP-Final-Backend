@@ -29,34 +29,6 @@ namespace Core.Services
             return await _screeningRepository.AddScreeningAsync(screening);
         }
 
-        /// <summary>
-        /// Checks to see if screening exists, then checks to see if user exists
-        /// If both exist, adds user to Spectators of the screening
-        /// If user had already bought 10 tickets for the same screening he is unable to buy another
-        /// </summary>
-        /// <param name="mediaId"></param>
-        /// <param name="username"></param>
-        /// <returns></returns>
-        public async Task<bool> AddUserToScreeningAsync(int mediaId, string username)
-        {
-            var screening = await _screeningRepository.GetScreeningByMediaIdAsync(mediaId);
-
-            if (screening == null)
-                throw new ArgumentException("Screening with given mediaId does not exist");
-
-            var user = await _accountRepository.GetUserByUsernameAsync(username);
-
-            if (user == null)
-                throw new ArgumentException("User with given username does not exist");
-
-            if (await _screeningRepository.GetNumberOfAlreadyReservedTickets(user.Id, screening.Id) > 10)
-                throw new ArgumentException("Unable to buy more than 10 ticekts");
-
-            screening.Spectators.Add(user);
-
-            _screeningRepository.UpdateScreening(screening);
-
-            return await _screeningRepository.SaveAllAsync();
-        }
+        
     }
 }

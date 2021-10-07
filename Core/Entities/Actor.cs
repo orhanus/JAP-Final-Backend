@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Core.Entities
 {
     [Table("Actors")]
-    public class Actor
+    public class Actor : BaseEntity
     {
         public int Id { get; set; }
         public string Firstname { get; set; }

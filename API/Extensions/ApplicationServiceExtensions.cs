@@ -28,6 +28,9 @@ namespace API.Extensions
             services.AddScoped<IScreeningRepository, ScreeningRepository>();
             services.AddScoped<IScreeningService, ScreeningService>();
 
+            services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<ITicketService, TicketService>();
+
             services.AddScoped<IActorRepository, ActorRepository>();
 
             services.AddScoped<ITokenService, TokenService>();

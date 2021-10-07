@@ -40,6 +40,12 @@ namespace Core.Services
             return await _mediaRepository.AddMediaAsync(media);
         }
 
+        /// <summary>
+        /// Checks if a media with given id exists
+        /// If the media exists, method modifies media's properties before saving changes
+        /// </summary>
+        /// <param name="mediaDto"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateMediaAsync(UpdateMediaDto mediaDto)
         {
             var media = await _mediaRepository.GetMediaQuery().FirstOrDefaultAsync(media => media.Id == mediaDto.Id);

@@ -9,6 +9,6 @@ namespace Core.Entities
     public class User : IdentityUser<int>
     {
         public ICollection<UserRole> UserRoles { get; set; }
-        public ICollection<Screening> Screenings { get; set; } = new List<Screening>();
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }

@@ -33,6 +33,11 @@ namespace Repository
             return await _userManager.CreateAsync(user, password);
         }
 
+        public async Task<User> GetUserByIdAsync(int id)
+        {
+            return await _userManager.Users.FirstOrDefaultAsync(user => user.Id == id);
+        }
+
         public async Task<User> GetUserByUsernameAsync(string username)
         {
             return await _userManager.Users.FirstOrDefaultAsync(user => user.UserName == username);

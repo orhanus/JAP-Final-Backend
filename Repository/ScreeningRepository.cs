@@ -36,7 +36,7 @@ namespace Repository
 
         public async Task<ICollection<Screening>> GetScreeningsAsync()
         {
-            return await _context.Screenings.Include(x => x.Movie).Include(x => x.Spectators).ToListAsync();
+            return await _context.Screenings.Include(x => x.Movie).Include(x => x.Tickets).ToListAsync();
         }
 
         public void UpdateScreening(Screening screening)
@@ -50,10 +50,5 @@ namespace Repository
             return await SaveAllAsync();
         }
 
-        public async Task<int> GetNumberOfAlreadyReservedTickets(int userId, int screeningId)
-        {
-            var screening = await _context.Screenings.FindAsync(screeningId);
-            return screening.Spectators.Count(x => x.Id == userId);
-        }
     }
 }
