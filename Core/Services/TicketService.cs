@@ -45,7 +45,7 @@ namespace Core.Services
 
             if (await _ticketRepository.GetNumberOfTicketsAlreadyBought(ticketDto.ScreeningId, ticketDto.UserId) 
                 + ticketDto.NumberOfTickets > 10)
-                throw new ArgumentException("Unable to buy more than 10 ticekts");
+                throw new ArgumentException("Unable to buy more than 10 tickets");
 
 
 
