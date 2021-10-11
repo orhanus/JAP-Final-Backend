@@ -30,7 +30,7 @@ namespace Repository
 
         public IQueryable<Media> GetMediaQuery()
         {
-            return _context.Media.Include(x => x.Actors).Include(x => x.Screenings);
+            return _context.Media.Include(x => x.Actors).Include(x => x.Screenings).ThenInclude(x => x.Address);
         }
 
         public async Task<bool> SaveAllAsync()

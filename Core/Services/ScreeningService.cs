@@ -29,6 +29,9 @@ namespace Core.Services
             return await _screeningRepository.AddScreeningAsync(screening);
         }
 
-        
+        public async Task<ScreeningDto> GetScreeningByMediaIdAsync(int mediaId)
+        {
+            return _mapper.Map<ScreeningDto>(await _screeningRepository.GetScreeningByMediaIdAsync(mediaId));
+        }
     }
 }

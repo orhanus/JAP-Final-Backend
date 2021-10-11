@@ -31,7 +31,7 @@ namespace Repository
 
         public async Task<Screening> GetScreeningByMediaIdAsync(int mediaId)
         {
-            return await _context.Screenings.FirstOrDefaultAsync(screening => screening.MediaId == mediaId);
+            return await _context.Screenings.Include(x => x.Movie).Include(x => x.Address).FirstOrDefaultAsync(screening => screening.MediaId == mediaId);
         }
 
         public async Task<ICollection<Screening>> GetScreeningsAsync()

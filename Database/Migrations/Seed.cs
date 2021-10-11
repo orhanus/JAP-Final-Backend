@@ -29,17 +29,17 @@ namespace Database.Migrations
         {
             if (await context.Media.AnyAsync()) return;
 
-            //var showData = await System.IO.File.ReadAllTextAsync("../Database/Migrations/ShowSeedData.json");
-            //var shows = JsonSerializer.Deserialize<List<Media>>(showData);
+            var showData = await System.IO.File.ReadAllTextAsync("../Database/Migrations/ShowSeedData.json");
+            var shows = JsonSerializer.Deserialize<List<Media>>(showData);
 
-            //Random random = new Random();
+            Random random = new Random();
 
-            //foreach (var show in shows)
-            //{
-            //    show.Actors = await ExistingActorsInDb(show.Actors, context);
-            //    show.Screenings = new List<Screening> { new Screening { ScreeningTime = DateTime.Now.AddDays(random.Next(-50, 50)) } };
-            //    context.Media.Add(show);
-            //}
+            foreach (var show in shows)
+            {
+                show.Actors = await ExistingActorsInDb(show.Actors, context);
+                show.Screenings = new List<Screening> { new Screening { ScreeningTime = DateTime.Now.AddDays(random.Next(-50, 50)) } };
+                context.Media.Add(show);
+            }
 
             var roles = new List<Role>
             {

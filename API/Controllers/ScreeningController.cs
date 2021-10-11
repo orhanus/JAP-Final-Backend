@@ -2,6 +2,7 @@
 using Core.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -24,6 +25,12 @@ namespace API.Controllers
                 return NoContent();
 
             return StatusCode(500);
+        }
+
+        [HttpGet("{mediaId}")]
+        public async Task<ActionResult<ICollection<ScreeningDto>>> GetScreeningByMediaId(int mediaId)
+        {
+            return Ok(await _screeningService.GetScreeningByMediaIdAsync(mediaId));
         }
     }
 }

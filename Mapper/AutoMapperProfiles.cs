@@ -26,6 +26,9 @@ namespace Mapper
             CreateMap<AddScreeningDto, Screening>();
 
             CreateMap<User, SpectatorDto>();
+
+            CreateMap<Address, AddressDto>();
+            CreateMap<AddressDto, Address>();
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Core.Interfaces.Services
     public interface IMediaService
     {
         Task<PaginatedResponseDto<MediaDto>> GetMediaAsync(MediaParams mediaParams, MediaType mediaType);
+        Task<MediaDto> GetMediaByIdAsync(int mediaId);
         Task<bool> AddMediaAsync(AddMediaDto addMediaDto);
         Task<bool> UpdateMediaAsync(UpdateMediaDto updateMediaDto);
 

@@ -31,6 +31,17 @@ namespace Core.Services
             _actorRepository = actorRepository;
         }
 
+        public async Task<MediaDto> GetMediaByIdAsync(int mediaId)
+        {
+            var media = await _mediaRepository.GetMediaQuery().FirstOrDefaultAsync(x => x.Id == mediaId);
+            if (media == null)
+                throw new ArgumentException("Media with given id does not exist");
+
+            var response = _mapper.Map<MediaDto>(await _mediaRepository.GetMediaByIdAsync(mediaId));
+            response.AverageRating = await _ratingRepository.GetAverageRatingAsync(mediaId);
+            return response;
+        }
+
         public async Task<bool> AddMediaAsync(AddMediaDto addMediaDto)
         {
             Media media = _mapper.Map<Media>(addMediaDto);
@@ -215,6 +226,8 @@ namespace Core.Services
 
                 return Keywords;
             }
-        }
+
+        
+    }
         #endregion
 }

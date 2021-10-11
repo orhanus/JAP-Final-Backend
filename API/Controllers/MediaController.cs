@@ -27,6 +27,12 @@ namespace API.Controllers
             return Ok(media);
         }
 
+        [HttpGet("id/{mediaId}")]
+        public async Task<ActionResult<MediaDto>> GetMediaById(int mediaId)
+        {
+            return Ok(await _mediaService.GetMediaByIdAsync(mediaId));
+        }
+
         [Authorize(Policy = "RequireAdminRole")]
         [HttpPost("add")]
         public async Task<ActionResult> AddMedia(AddMediaDto addMediaDto)
