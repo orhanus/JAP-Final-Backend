@@ -38,6 +38,9 @@ namespace Core.Services
             if (screening == null)
                 throw new ArgumentException("Screening with given Id does not exist");
 
+            if(screening.ScreeningTime < DateTime.Now)
+                throw new ArgumentException("Screening is in the past");
+
             var user = await _accountRepository.GetUserByIdAsync(ticketDto.UserId);
 
             if (user == null)

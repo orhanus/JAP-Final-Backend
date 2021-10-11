@@ -20,7 +20,7 @@ namespace API.Controllers
         }
 
         [Authorize(Policy = "RequireCustomerRole")]
-        [HttpPost("{mediaId}/buy")]
+        [HttpPost("buy")]
         public async Task<ActionResult> Buy(BuyTicketDto ticketDto)
         {
             var username = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

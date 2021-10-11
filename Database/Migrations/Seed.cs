@@ -32,12 +32,19 @@ namespace Database.Migrations
             var showData = await System.IO.File.ReadAllTextAsync("../Database/Migrations/ShowSeedData.json");
             var shows = JsonSerializer.Deserialize<List<Media>>(showData);
 
-            Random random = new Random();
+            shows[0].Screenings = new List<Screening>
+            {
+                new Screening { ScreeningTime = DateTime.Now.AddDays(-10) },
+                new Screening { ScreeningTime = DateTime.Now.AddDays(50) }
+            };
 
             foreach (var show in shows)
             {
                 show.Actors = await ExistingActorsInDb(show.Actors, context);
-                show.Screenings = new List<Screening> { new Screening { ScreeningTime = DateTime.Now.AddDays(random.Next(-50, 50)) } };
+                //show.Screenings = new List<Screening> 
+                //{ 
+                //    new Screening { ScreeningTime = DateTime.Now.AddDays(-10) } 
+                //};
                 context.Media.Add(show);
             }
 
